@@ -1,0 +1,127 @@
+<div class="container-fluid">
+
+  <div class="chat-row">
+
+    <div class="chat-col-1">
+      <div *ngIf="currentUser" class="currentUser">
+        <img class="avatar" src='{{currentUser.image}}' />
+        <p>{{currentUser.name}}</p>
+              <!-- <p><i class="bi bi-box-arrow-right"></i></p> -->
+         <p><i class="bi bi-pencil-square"></i></p>
+      </div>
+      <div class="searchBar">
+        <input type="text" class="searchField" (input)="searchUser($event)" />
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search"
+          viewBox="0 0 16 16">
+          <path
+            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+        </svg>
+      </div>
+      <div class="user-list-card">
+        <div class="user-card" [ngClass]="user?.phone === selectedUser?.phone ? 'active' :''"
+          *ngFor="let user of mockUserList" (click)="selectUserHandler(user?.phone)">
+
+          <img src="{{user.image}}" [alt]="user?.name" class="avatar" />
+          <span class="username">{{user?.name}}</span>
+          <div class="unread-msg-contaniner">
+            <span *ngIf="user?.newMessage > 0" class="unreadmsg">{{user.newMessage}}</span>
+            <span *ngIf="user?.lastmsg && user?.lastmsg?.message" class="time">{{user.lastmsg.time}}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="chat-content" [ngClass]="selectedUser ? 'chatbox' : ''">
+
+      <div class="chat-container" *ngIf="selectedUser">
+        <ng-container>
+          <div class="chat-header">
+            <div class="d-flex">
+              <img src="{{selectedUser.image}}" [alt]="selectedUser?.name" class="avatar" />
+              <p class="username">{{selectedUser?.name}}</p>
+            </div>
+
+            <div class="iconActivity">
+              <i class="bi bi-camera-video-fill"></i>
+              <i class="bi bi-telephone-fill"></i>
+              <i class="bi bi-three-dots-vertical"></i>
+            </div>
+
+          </div>
+
+          <div class="chat-body" #chatContainer>
+            <div class="chat-scroll">
+              <div class="chat-group" *ngFor="let messageGroup of messageData">
+                <h1>{{messageGroup.date}}</h1>
+                <div *ngFor="let item of messageGroup.messages"
+                  [ngClass]="item?.user === currentUser?.name ? 'same-user':'diff-user'">
+                  <div class="message">
+                    <p class="message-container" *ngIf="item?.type=='text' && item?.isDeleted !== currentUser.name">{{item?.message}}
+                      <span class="time"> {{item.time}} </span>
+                      <span *ngIf="item?.user === currentUser?.name">
+                        <!-- <i *ngIf="!item?.read" class="bi bi-check2"></i> -->
+                        <i [ngClass]="item?.read ? 'read' :'unread'" class="bi bi-check2-all"></i>
+                      </span>
+                      <i (click)="deleteMsg(item)" class="bi bi-trash"></i>
+                    </p>
+                    <p class="message-container" *ngIf="item?.type=='image'">
+                        <img [src]="item?.message" [alt]="item?.message">
+                        <span class="time"> {{item.time}} </span>
+                        <span *ngIf="item?.user === currentUser?.name">
+                          <!-- <i *ngIf="!item?.read" class="bi bi-check2"></i> -->
+                          <i [ngClass]="item?.read ? 'read' :'unread'" class="bi bi-check2-all"></i>
+                        </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-footer" *ngIf="selectedUser">
+
+            <div class="row justify-content-around">
+              <div class="col-md-8">
+                <div class="form-group mb-0 input">
+                  <input type="text" placeholder="Type a message" class="form-control" [(ngModel)]="messageText"
+                    (keyup)="$event.keyCode === 13 && sendMessage()" />
+                    <button class="msg-icon" [disabled]="messageText ? false : true" (click)="sendMessage()">
+                      <i class="bi bi-arrow-up-circle-fill"></i>
+                    </button>
+                </div>
+              </div>
+              <div class="col-md-1 d-flex mine">
+                <i class="bi bi-mic" *ngIf="!isUserSpeaking" (click)="startRecording()"></i>
+                <i class="bi bi-mic-mute" *ngIf="isUserSpeaking" (click)="stopRecording()"></i>
+                <i class="bi bi-camera"></i>
+               <label for="imageFile"> <i class="bi bi-file-image"></i>
+                <input style="display: none;" type="file" id="imageFile"  (change)="SelectedImage($event)"/>
+              </label>
+              </div>
+              <!-- <div class="col-md-2 text-center align-self-center">
+                <button class="btn btn-primary btn-sm px-3" (click)="sendMessage()">Send
+                </button>
+              </div> -->
+            </div>
+
+          </div>
+        </ng-container>
+      </div>
+      <div *ngIf="!selectedUser" class="userImage">
+        <img class="pic" src="{{currentUser.image}}" />
+      </div>
+      <div class="welcome-msg" *ngIf="!selectedUser">
+        <div class="welcome-chat">
+          <h2>Hi , {{currentUser.name}} Welcome to ChatApp</h2>
+          <div class="arrow">
+            <div class="arrow-left"></div>
+            <div class="arrow-cross"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

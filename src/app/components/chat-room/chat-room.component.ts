@@ -52,7 +52,6 @@ export class ChatRoomComponent {
 
     this.store.select(UserData).subscribe((userdata) => {
       this.userList = JSON.parse(JSON.stringify(userdata))
-      console.log(this.userList, "12345:::")
       if (this.currentUser) {
         this.mockUserList = this.userList.filter((user: any) => user.phone !== this.currentUser.phone.toString());
       }
@@ -67,7 +66,6 @@ export class ChatRoomComponent {
         this.chatService.getChatData().subscribe((res) => {
           this.storageArray = res
           Object.keys(this.currentUser.roomId).forEach((val: any) => {
-            console.log(this.storageArray, "1111", this.currentUser.roomId[val])
             const index = this.storageArray
               .findIndex((storage: any) => storage.roomId === this.currentUser.roomId[val]);
             let lastmessage = this.storageArray[index]?.chats
@@ -82,7 +80,6 @@ export class ChatRoomComponent {
               let user = unreadmsg.map((res: any) => res.user)[0]
               let inx = this.mockUserList.findIndex((sender: any) => sender.name === user)
               this.mockUserList[inx].newMessage = unreadmsg.length
-              console.log(this.mockUserList[inx], "last msg")
             }
           })
         })
@@ -91,7 +88,6 @@ export class ChatRoomComponent {
 
     // socket subscription for the messages
     this.chatService.getMessage().subscribe((data: { user: string, room: string, message: string }) => {
-      console.log(this.selectedUser, "321:::")
       if (this.selectedUser) {
         this.chatService.markAsRead({ user: this.selectedUser.name, roomId: this.roomId }).subscribe()
       }
@@ -99,7 +95,6 @@ export class ChatRoomComponent {
         this.chatService.getChatData().subscribe((res) => {
           this.storageArray = res
           if (this.roomId) {
-            console.log(this.storageArray, "storageArray")
             const storeIndex = this.storageArray
               .findIndex((storage: any) => storage.roomId === this.roomId);
             this.messageArray = this.storageArray[storeIndex]?.chats || [];
@@ -117,7 +112,6 @@ export class ChatRoomComponent {
                     const index = this.storageArray
                       .findIndex((storage: any) => storage.roomId === data.room);
                     let unreadmsg = this.storageArray[index]?.chats.filter((chat: any) => chat.user !== this.currentUser.name && !chat.read)
-                    console.log(unreadmsg, "unreadmsg", unreadmsg[unreadmsg.length - 1])
                     this.mockUserList[i].lastmsg = unreadmsg[unreadmsg.length - 1]
                     this.mockUserList[i].newMessage = unreadmsg.length
                   }
@@ -146,7 +140,6 @@ export class ChatRoomComponent {
   private groupByDate() {
     return this.messageArray.reduce((acc: any, message) => {
       const date = message.date;
-      console.log(acc, date, "90:::::")
       if (acc[date]) {
         acc[date].push(message);
       } else {
@@ -202,7 +195,6 @@ export class ChatRoomComponent {
 
   sendMessage(): void {
     this.chatService.getChatData().subscribe((res) => {
-      console.log(res, "chats")
       this.storageArray = res
       const storeIndex = this.storageArray
         .findIndex((storage: any) => storage.roomId === this.roomId);
@@ -266,7 +258,6 @@ export class ChatRoomComponent {
       this.url = false
     })
 
-    console.log(this.selectedUser, this.roomId, "12345:::")
   }
   searchUser(evt: any) {
     this.userList = this.mockUserList.filter((val: any) => {
@@ -277,7 +268,6 @@ export class ChatRoomComponent {
   // deleting message
 
   deleteMsg(deletedMsg: any) {
-    console.log(deletedMsg, "delete", this.roomId);
     this.chatService.delete({...deletedMsg , roomId : this.roomId , deleteForUser : this.currentUser.name}).subscribe((res)=>{
       this.chatService.deleteMessage(deletedMsg);
     })
@@ -287,7 +277,6 @@ export class ChatRoomComponent {
 
   scrollToBottom() {
     this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight + 10;
-    console.log(this.chatContainer.nativeElement.scrollHeight, this.chatContainer.nativeElement.scrollTop, "scroll")
   }
 
   // voice message function 

@@ -320,7 +320,7 @@ export class ChatRoomComponent {
     if (selectedFile) {
       this.chatService.uploadImage(formData).subscribe()
       this.url = true;
-      this.messageText = `http://192.168.10.16:3000/uploads/${selectedFile.name}`;
+      this.messageText = `https://chatapp-server-cr21.onrender.com/uploads/${selectedFile.name}`;
     }
   }
 }

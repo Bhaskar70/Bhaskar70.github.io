@@ -60,7 +60,7 @@ export class RegisterComponent {
         id: this.loginData.length + 1,
         name: this.registerData.get('name')?.value,
         phone: this.registerData.get('phone')?.value,
-        image: `http://192.168.10.16:3000/uploads/${this.url}`,
+        image: `https://chatapp-server-cr21.onrender.com/uploads/${this.url}`,
         roomId: obj,
         newMessage: 0,
         lastmsg : {}

@@ -4,7 +4,7 @@
 
     <div class="chat-col-1">
       <div *ngIf="currentUser" class="currentUser">
-        <img class="avatar" src='{{currentUser.image}}' />
+        <img class="avatar" crossorigin= "anonymous" src='{{currentUser.image}}' />
         <p>{{currentUser.name}}</p>
               <!-- <p><i class="bi bi-box-arrow-right"></i></p> -->
          <p><i class="bi bi-pencil-square"></i></p>
@@ -21,7 +21,7 @@
         <div class="user-card" [ngClass]="user?.phone === selectedUser?.phone ? 'active' :''"
           *ngFor="let user of mockUserList" (click)="selectUserHandler(user?.phone)">
 
-          <img src="{{user.image}}" [alt]="user?.name" class="avatar" />
+          <img src="{{user.image}}" crossorigin= "anonymous" [alt]="user?.name" class="avatar" />
           <span class="username">{{user?.name}}</span>
           <div class="unread-msg-contaniner">
             <span *ngIf="user?.newMessage > 0" class="unreadmsg">{{user.newMessage}}</span>
@@ -37,7 +37,7 @@
         <ng-container>
           <div class="chat-header">
             <div class="d-flex">
-              <img src="{{selectedUser.image}}" [alt]="selectedUser?.name" class="avatar" />
+              <img src="{{selectedUser.image}}" crossorigin= "anonymous" [alt]="selectedUser?.name" class="avatar" />
               <p class="username">{{selectedUser?.name}}</p>
             </div>
 
@@ -65,7 +65,7 @@
                       <i (click)="deleteMsg(item)" class="bi bi-trash"></i>
                     </p>
                     <p class="message-container" *ngIf="item?.type=='image'">
-                        <img [src]="item?.message" [alt]="item?.message">
+                        <img crossorigin= "anonymous" [src]="item?.message" [alt]="item?.message">
                         <span class="time"> {{item.time}} </span>
                         <span *ngIf="item?.user === currentUser?.name">
                           <!-- <i *ngIf="!item?.read" class="bi bi-check2"></i> -->
@@ -108,7 +108,7 @@
         </ng-container>
       </div>
       <div *ngIf="!selectedUser" class="userImage">
-        <img class="pic" src="{{currentUser.image}}" />
+        <img class="pic" src="{{currentUser.image}}" crossorigin= "anonymous" />
       </div>
       <div class="welcome-msg" *ngIf="!selectedUser">
         <div class="welcome-chat">
